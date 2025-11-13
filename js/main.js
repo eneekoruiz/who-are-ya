@@ -1,5 +1,7 @@
 import { folder, leftArrow } from "./fragments.js";
 import { fetchJSON } from "./loaders.js";
+import { setupRows } from "./rows.js";
+
 
 function differenceInDays(date1) {
     // YOUR CODE HERE
@@ -54,15 +56,31 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
   (values) => {
 
     let solution;
-    
+
     [game.players, solution] = values;
     console.log("✅ Players:", game.players);
     console.log("✅ Solution array:", solution);
     game.solution = getSolution(game.players, solution, difference_In_Days);
-    
+
     console.log(game.solution);
 
     document.getElementById("mistery").src = `https://playfootball.games/media/players/${game.solution.id % 32}/${game.solution.id}.png`;
-  
+      // YOUR CODE HERE
+      let addRow = setupRows( /* THIS NEEDS A PARAMETER */ game);
+      // get myInput object...
+      // when the user types a number an press the Enter key:
+      //
+      const input = document.getElementById("myInput");
+      input.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+              const playerId = input.value.trim();
+              const player = game.players.find(p => p.id === playerId);
+              if (!player) {
+                  alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
+              }else{
+                  addRow(playerId);
+              }
+          }
+      });
   }
 );
