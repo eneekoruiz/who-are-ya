@@ -69,18 +69,20 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
       let addRow = setupRows( /* THIS NEEDS A PARAMETER */ game);
       // get myInput object...
       // when the user types a number an press the Enter key:
-      //
-      const input = document.getElementById("myInput");
-      input.addEventListener("keydown", function (event) {
-          if (event.key === "Enter") {
-              const playerId = input.value.trim();
-              const player = game.players.find(p => p.id === playerId);
-              if (!player) {
-                  alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
-              }else{
-                  addRow(playerId);
-              }
-          }
-      });
+    const input = document.getElementById("myInput");
+    input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        const playerId = input.value.trim();
+        // inputa zenbaki bat dela egiaztatu
+        const playerIdNum = Number(playerId);
+        
+        const player = game.players.find(p => p.id === playerIdNum);  
+        if (!player) {
+            alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
+        } else {
+            addRow(playerIdNum); 
+        }
+    }
+});
   }
 );
