@@ -2,6 +2,8 @@
 // .... stringToHTML ....
 // .... setupRows .....
 import { stringToHTML } from "./fragments.js";
+import { higher } from "./fragments.js";   
+import { lower } from "./fragments.js";
 
 const delay = 350;
 const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
@@ -60,7 +62,8 @@ let setupRows = function (game) {
             }
 
             if (adinaSartu === adinaSoluzioa) return "correct";
-            return adinaSartu < adinaSoluzioa ? "higher" : "lower";
+            else if (adinaSartu < adinaSoluzioa) return "lower";
+            else return "higher";
         }
 
         if (balioa === theValue) return "correct";
@@ -69,6 +72,7 @@ let setupRows = function (game) {
 
 
     function setContent(guess) {
+        console.log(guess);
         return [
             `<img src="https://playfootball.games/media/nations/${guess.nationality.toLowerCase()}.svg" alt="" style="width: 60%;">`,
             `<img src="https://playfootball.games/media/competitions/${leagueToFlag(guess.leagueId)}.png" alt="" style="width: 60%;">`,
@@ -85,6 +89,9 @@ let setupRows = function (game) {
             fragments += `<div class="w-1/5 shrink-0 flex justify-center ">
                             <div class="mx-1 overflow-hidden w-full max-w-2 shadowed font-bold text-xl flex aspect-square rounded-full justify-center items-center bg-slate-400 text-white ${check(attribs[j], guess[attribs[j]]) == 'correct' ? 'bg-green-500' : ''} opacity-0 fadeInDown" style="max-width: 60px; animation-delay: ${s};">
                                 ${content[j]}
+                                ${check(attribs[j], guess[attribs[j]]) == 'higher' ? higher : ''}
+                                ${check(attribs[j], guess[attribs[j]]) == 'lower' ? lower : ''}
+
                             </div>
                          </div>`
         }
@@ -103,12 +110,13 @@ let setupRows = function (game) {
 
     let getPlayer = function (playerId) {
         // YOUR CODE HERE
-        return game.players.find(p=> p.id === Number(playerId));
+        return  game.players.find(p=> p.id === Number(playerId));
+
     }
 
     return /* addRow */ function (playerId) {
-
-        let guess = getPlayer(playerId)
+        console.log("Sartutako IDa: " + playerId);
+        let guess = getPlayer(playerId.id)
         console.log(guess)
 
         let content = setContent(guess)

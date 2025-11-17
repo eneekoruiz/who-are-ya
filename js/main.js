@@ -1,14 +1,14 @@
 import { folder, leftArrow } from "./fragments.js";
 import { fetchJSON } from "./loaders.js";
 import { setupRows } from "./rows.js";
-
+import { autocomplete } from "./autocomplete.js";
 
 function differenceInDays(date1) {
     // YOUR CODE HERE
     const hoy = new Date();
     if(date1 > hoy){
         console.log("data txikixaua")
-        return 0;
+        return 0; 
     }
     const differenceInTime = hoy.getTime() - date1.getTime();
     console.log(differenceInTime);
@@ -16,7 +16,7 @@ function differenceInDays(date1) {
     return differenceInDays;
 }
 
-let difference_In_Days = differenceInDays(new Date("01-10-2025")); //"01-10-2025"
+let difference_In_Days = differenceInDays(new Date('01-10-2025')); //"01-10-2025"
 
 window.onload = function () {
   document.getElementById("gamenumber").innerText = difference_In_Days.toString();
@@ -70,19 +70,20 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
       // get myInput object...
       // when the user types a number an press the Enter key:
     const input = document.getElementById("myInput");
+    autocomplete(input, game);
+    
     input.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-        const playerId = input.value.trim();
+        const playerName = input.value;
         // inputa zenbaki bat dela egiaztatu
-        const playerIdNum = Number(playerId);
         
-        const player = game.players.find(p => p.id === playerIdNum);  
+        const player = game.players.find(p => p.name === playerName);  
         if (!player) {
             alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
         } else {
-            addRow(playerIdNum); 
+            addRow(player); 
         }
-    }
-});
+      }
+    }); 
   }
 );
