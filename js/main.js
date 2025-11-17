@@ -57,12 +57,24 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
 
     let solution;
 
+    let localGame=JSON.parse(localStorage.getItem("game")) || null
+
+    if (localGame !== null) {
+      game=localGame;
+    }
+
     [game.players, solution] = values;
     console.log("✅ Players:", game.players);
     console.log("✅ Solution array:", solution);
+    let pastSol=game.solution;
     game.solution = getSolution(game.players, solution, difference_In_Days);
-
-    console.log(game.solution);
+    if (pastSol.id !== game.solution.id) {
+      game.guesses = [];
+      localStorage.setItem("game", JSON.stringify(game));
+      console.log("New day, guesses reset");
+    }
+    console.log("Solución del día:", game.solution);
+    console.log("Guesses cargadas:", game.guesses);
 
     document.getElementById("mistery").src = `https://playfootball.games/media/players/${game.solution.id % 32}/${game.solution.id}.png`;
       // YOUR CODE HERE
@@ -84,6 +96,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
             addRow(player.id);
         }
       }
+      
     }); 
   }
 );

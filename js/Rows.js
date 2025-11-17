@@ -143,10 +143,6 @@ let setupRows = function (game) {
         input.placeholder = `Guess ${game.guesses.length + 1} of 8`;
     }
 
-
-
-
-
     function gameEnded(lastGuess){
         if (lastGuess == game.solution.id) {
             return true;
@@ -172,14 +168,33 @@ let setupRows = function (game) {
 
     resetInput();
 
+    (function renderStoredGuesses(){
+        if (!Array.isArray(game.guesses)) return;
+        console.log("Es esto lo que se duplica?", game.guesses);
+        console.log("Soluzioak", game.solution);
+        console.log("Renderizando guesses almacenadas:", game.guesses.length);
+        game.guesses.forEach(gid => {
+            const idNum = Number(gid);
+            const prevGuess = getPlayer(idNum);
+            if (!prevGuess) return;
+            const content = setContent(prevGuess);
+            showContent(content, prevGuess);
+        });
+    })();
+
     return /* addRow */ function (playerId) {
 
+        // If nothing stored yet, initialize the structure
+        
         let guess = getPlayer(playerId)
         console.log(guess)
+
+        console.log("Guesses", game.guesses)
 
         let content = setContent(guess)
 
         game.guesses.push(playerId)
+
         updateState(playerId)
 
         resetInput();
@@ -196,10 +211,12 @@ let setupRows = function (game) {
             }
         }
 
-
         showContent(content, guess)
+        
+        localStorage.setItem("game", JSON.stringify(game))
     }
 }
+
 function calculateTimeUntilMidnight() {
     const now = new Date();
     const midnight = new Date();

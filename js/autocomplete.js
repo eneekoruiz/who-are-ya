@@ -6,8 +6,9 @@ export {autocomplete}
 
 function autocomplete(inp, game) {
 
+    /* Kendu in dut localstoragerekin duplikatuak ez agertzeko
     let addRow = setupRows(game);
-
+    */
     function filterPlayers(searchText) {
         if (!searchText) return [];
 
