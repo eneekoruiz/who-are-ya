@@ -1,4 +1,5 @@
 import {setupRows} from "./rows.js";
+import {setupRows} from "./rows.js";
 
 export {autocomplete}
 

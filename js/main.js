@@ -81,7 +81,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
         if (!player) {
             alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
         } else {
-            addRow(player); 
+            addRow(player.id);
         }
       }
     }); 
