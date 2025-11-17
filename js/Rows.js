@@ -5,6 +5,9 @@ import { stringToHTML } from "./fragments.js";
 import { higher } from "./fragments.js";   
 import { lower } from "./fragments.js";
 import { initState } from "./stats.js";
+import { showStats } from "./fragments.js";
+import { updateStats } from "./stats.js";
+import { getStats } from "./stats.js";
 
 const delay = 350;
 const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
@@ -143,6 +146,7 @@ let setupRows = function (game) {
 
 
 
+
     function gameEnded(lastGuess){
         if (lastGuess == game.solution.id) {
             return true;
@@ -157,10 +161,12 @@ let setupRows = function (game) {
 
     function success() {
         unblur('success');
+        showStats();
     }
 
     function gameOver() {
         unblur('failure');
+        showStats();
     }
 
 
@@ -179,7 +185,7 @@ let setupRows = function (game) {
         resetInput();
 
         if (gameEnded(playerId)) {
-            // updateStats(game.guesses.length);
+            updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
                 success();
@@ -194,6 +200,19 @@ let setupRows = function (game) {
         showContent(content, guess)
     }
 }
+function calculateTimeUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0); // Siguiente medianoche
 
+    const diff = midnight - now;
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
 
 export { setupRows };
+export {calculateTimeUntilMidnight};

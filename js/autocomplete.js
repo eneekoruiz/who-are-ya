@@ -1,5 +1,6 @@
 import {setupRows} from "./rows.js";
-import {setupRows} from "./rows.js";
+
+
 
 export {autocomplete}
 
@@ -7,7 +8,25 @@ function autocomplete(inp, game) {
 
     let addRow = setupRows(game);
 
-    let players = game.players;
+    function filterPlayers(searchText) {
+        if (!searchText) return [];
+
+        const upperSearch = searchText.toUpperCase();
+
+        // Primero: jugadores que empiezan con el texto buscado
+        const startsWithMatches = game.players.filter(player => {
+            return player.name.toUpperCase().startsWith(upperSearch);
+        });
+
+        // Segundo: jugadores que contienen el texto (pero no al inicio)
+        const containsMatches = game.players.filter(player => {
+            const result = parse(player.name, searchText);
+            return result !== null && !player.name.toUpperCase().startsWith(upperSearch);
+        });
+
+        // Combinar: primero los que empiezan, luego los que contienen
+        return [...startsWithMatches, ...containsMatches].slice(0, 10);
+    }
 
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -21,6 +40,14 @@ function autocomplete(inp, game) {
             return false;
         }
         currentFocus = -2;
+
+        const filteredPlayers = filterPlayers(val);
+
+        // Si no hay resultados, no crear la lista
+        if (filteredPlayers.length === 0) {
+            return false;
+        }
+
         /*create a DIV element that will contain the items (values):*/
         a = document.createElement("DIV");
         a.setAttribute("id", this.id + "autocomplete-list");
@@ -28,36 +55,38 @@ function autocomplete(inp, game) {
         /*append the DIV element as a child of the autocomplete container:*/
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
-        for (i = 0; i < players.length; i++) {
+        for (i = 0; i < filteredPlayers.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
-            if ( /* YOUR CODE HERE */ val.toUpperCase() === players[i].name.toUpperCase().substr(0, val.length)) {
+            //if ( /* YOUR CODE HERE */ val.toUpperCase() === players[i].name.toUpperCase().substr(0, val.length)) {
 
-                b = document.createElement("DIV");
-                b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
-                b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
+            b = document.createElement("DIV");
+            b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
+            b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${filteredPlayers[i].teamId % 32}/${filteredPlayers[i].teamId}.png"  width="28" height="28">`;
+            const result = parse(filteredPlayers[i].name, val);
 
-                /*make the matching letters bold:*/
-                b.innerHTML += `<div class='self-center'>
-                                    <span class='font-bold'> ${players[i].name.substr(0, val.length)}</span><span class>${players[i].name.substr(val.length)}</span>
-                                    <input type='hidden' name='name' value='${players[i].name}'>
-                                    <input type='hidden' name='id' value='${players[i].id}'>
-                                </div>`;
+            /*make the matching letters bold:*/
+            /*make the matching letters bold:*/
+            b.innerHTML += `<div class='self-center'>
+                    <span>${result.before}</span><span class='font-bold'>${result.match}</span><span>${result.after}</span>
+                    <input type='hidden' name='name' value='${filteredPlayers[i].name}'>
+                    <input type='hidden' name='id' value='${filteredPlayers[i].id}'>
+                </div>`;
 
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function (e) {
-                    /*insert the value for the autocomplete text field:*/
-                    inp.value = this.getElementsByTagName("input")[0].value;
 
-                    /*close the list of autocompleted values,
-                    (or any other open lists of autocompleted values:*/
-                    closeAllLists();
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function (e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
 
-                    
-                });
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                closeAllLists();
 
-                /* (Tab selection handled on the input element) */
-                a.appendChild(b);
-            }
+
+            });
+
+            /* (Tab selection handled on the input element) */
+            a.appendChild(b);
         }
     });
 
