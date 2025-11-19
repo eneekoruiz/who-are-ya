@@ -10,7 +10,7 @@ import { updateStats } from "./stats.js";
 import { getStats } from "./stats.js";
 
 const delay = 350;
-const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
+const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate', 'number']
 
 
 let setupRows = function (game, status) {
@@ -67,8 +67,18 @@ let setupRows = function (game, status) {
             }
 
             if (adinaSartu === adinaSoluzioa) return "correct";
-            else if (adinaSartu < adinaSoluzioa) return "lower";
-            else return "higher";
+            // if guessed age is less than solution age, indicate solution is higher
+            else if (adinaSartu < adinaSoluzioa) return "higher";
+            else return "lower";
+        }
+
+        if (theKey === "number") {
+            const solNum = Number(balioa);
+            const valNum = Number(theValue);
+            if (!Number.isFinite(solNum) || !Number.isFinite(valNum)) return "incorrect";
+            if (valNum === solNum) return "correct";
+            // if guessed number is less than solution number, the solution is higher
+            return valNum < solNum ? "higher" : "lower";
         }
 
         if (balioa === theValue) return "correct";
@@ -101,15 +111,18 @@ let setupRows = function (game, status) {
             `<img src="https://playfootball.games/media/competitions/${leagueToFlag(guess.leagueId)}.png" alt="" style="width: 60%;">`,
             `<img src="https://cdn.sportmonks.com/images/soccer/teams/${guess.teamId % 32}/${guess.teamId}.png" alt="" style="width: 60%;">`,
             `${guess.position}`,
-            `${getAge(guess.birthdate)}`
+            `${getAge(guess.birthdate)}`,
+            `${guess.number}`
         ]
     }
 
     function showContent(content, guess) {
         let fragments = '', s = '';
+        // calculate flexible width so any number of items (e.g. 6) fits in one row
+        const widthPercent = (100 / content.length).toFixed(4) + '%';
         for (let j = 0; j < content.length; j++) {
             s = "".concat(((j + 1) * delay).toString(), "ms")
-            fragments += `<div class="w-1/5 shrink-0 flex justify-center ">
+            fragments += `<div class="shrink-0 flex justify-center" style="flex: 0 0 ${widthPercent};">
                             <div class="mx-1 overflow-hidden w-full max-w-2 shadowed font-bold text-xl flex aspect-square rounded-full justify-center items-center bg-slate-400 text-white ${check(attribs[j], guess[attribs[j]]) == 'correct' ? 'bg-green-500' : ''} opacity-0 fadeInDown" style="max-width: 60px; animation-delay: ${s};">
                                 ${content[j]}
                                 ${check(attribs[j], guess[attribs[j]]) == 'higher' ? higher : ''}
