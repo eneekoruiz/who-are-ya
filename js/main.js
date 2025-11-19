@@ -21,6 +21,9 @@ let difference_In_Days = differenceInDays(new Date('01-10-2025')); //"01-10-2025
 window.onload = function () {
   document.getElementById("gamenumber").innerText = difference_In_Days.toString();
   document.getElementById("back-icon").innerHTML = folder + leftArrow;
+  let status = localStorage.getItem("status") || 0
+  console.log("Status: ", status);
+  setupRows(game, status);
 };
 
 let game = {
@@ -57,7 +60,10 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
 
     let solution;
 
-    let localGame=JSON.parse(localStorage.getItem("game")) || null
+    let rawGame = localStorage.getItem("game");
+    let localGame = rawGame ? JSON.parse(rawGame) : null;
+
+    let status=localStorage.getItem("satatus") || 0
 
     if (localGame !== null) {
       game=localGame;
@@ -71,6 +77,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
     if (pastSol.id !== game.solution.id) {
       game.guesses = [];
       localStorage.setItem("game", JSON.stringify(game));
+      localStorage.setItem("satatus", 0) //Reset status to 0 (ongoing game)
       console.log("New day, guesses reset");
     }
     console.log("Solución del día:", game.solution);
@@ -91,7 +98,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
         
         const player = game.players.find(p => p.name === playerName);  
         if (!player) {
-            alert(`Ez dago jokalaririk ID honekin: ${playerId}`);
+            alert(`Ez dago jokalaririk izen honekin: ${playerName}`);
         } else {
             addRow(player.id);
         }

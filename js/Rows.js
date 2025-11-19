@@ -13,7 +13,7 @@ const delay = 350;
 const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 
-let setupRows = function (game) {
+let setupRows = function (game, status) {
     let [state, updateState] = initState('WAYgameState', game.solution.id)
 
 
@@ -158,11 +158,21 @@ let setupRows = function (game) {
     function success() {
         unblur('success');
         showStats();
+        localStorage.setItem("status", 1)
     }
 
     function gameOver() {
         unblur('failure');
         showStats();
+        localStorage.setItem("status", 2)
+    }
+        
+    if (status==1) {
+        success();
+    }
+
+    if (status==2)  {
+        gameOver();
     }
 
 
@@ -195,6 +205,7 @@ let setupRows = function (game) {
 
         game.guesses.push(playerId)
 
+
         updateState(playerId)
 
         resetInput();
@@ -206,7 +217,7 @@ let setupRows = function (game) {
                 success();
             }
 
-            if (game.guesses.length == 8) {
+            if (game.guesses.length == 8)  {
                 gameOver();
             }
         }

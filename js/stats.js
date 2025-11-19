@@ -44,6 +44,7 @@ let getStats = function (what){
     };
     gameStats.successRate = successRate(gameStats);
 
+    console.log('Stats obtenidos:', gameStats); 
 
     return gameStats;
 }
