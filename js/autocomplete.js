@@ -73,7 +73,6 @@ function autocomplete(inp, game) {
                     <input type='hidden' name='id' value='${filteredPlayers[i].id}'>
                 </div>`;
 
-
             /*execute a function when someone clicks on the item value (DIV element):*/
             b.addEventListener("click", function (e) {
                 /*insert the value for the autocomplete text field:*/

@@ -112,7 +112,7 @@ let setupRows = function (game, status) {
             `<img src="https://cdn.sportmonks.com/images/soccer/teams/${guess.teamId % 32}/${guess.teamId}.png" alt="" style="width: 60%;">`,
             `${guess.position}`,
             `${getAge(guess.birthdate)}`,
-            `${guess.number}`
+            `<span style="white-space: nowrap; font-size: 1rem;">#${guess.number}</span>`
         ]
     }
 
@@ -127,7 +127,6 @@ let setupRows = function (game, status) {
                                 ${content[j]}
                                 ${check(attribs[j], guess[attribs[j]]) == 'higher' ? higher : ''}
                                 ${check(attribs[j], guess[attribs[j]]) == 'lower' ? lower : ''}
-
                             </div>
                          </div>`
         }

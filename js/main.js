@@ -77,7 +77,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
     if (pastSol.id !== game.solution.id) {
       game.guesses = [];
       localStorage.setItem("game", JSON.stringify(game));
-      localStorage.setItem("satatus", 0) //Reset status to 0 (ongoing game)
+      localStorage.setItem("status", 0) //Reset status to 0 (ongoing game)
       console.log("New day, guesses reset");
     }
     console.log("Solución del día:", game.solution);
