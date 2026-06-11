@@ -17,6 +17,14 @@ A front-end football guessing game built with vanilla JavaScript and Tailwind CS
 - `autocomplete.js` and `fragments.js` handle UI pieces
 - `js/scraping/` contains data-scraping exercises
 
+## Screenshots
+
+![Game screen](docs/images/home.png)
+
+## Social preview
+
+GitHub social preview asset: `docs/images/social-preview.png`
+
 ## Links
 
 - DeepWiki: https://deepwiki.com/eneekoruiz/who-are-ya
