@@ -1,0 +1,44 @@
+name: CI — Static Validation
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate JSON Datasets
+        run: |
+          node -e "
+            const fs = require('fs');
+            ['json/fullplayers25.json', 'json/solution25.json'].forEach(file => {
+              JSON.parse(fs.readFileSync(file, 'utf8'));
+              console.log('✓ Valid JSON:', file);
+            });
+          "
+
+      - name: Check Entrypoints
+        run: |
+          test -f index.html
+          test -f main.css
+          test -f js/main.js
+          echo "✓ All core game assets verified."
