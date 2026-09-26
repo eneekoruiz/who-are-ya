@@ -1,7 +1,7 @@
 {
   "name": "whoareyou",
   "version": "1.0.0",
-  "description": "",
+  "description": "Daily footballer guessing game built with JavaScript, Tailwind CSS, and local storage.",
   "homepage": "https://github.com/eneekoruiz/who-are-ya#readme",
   "bugs": {
     "url": "https://github.com/eneekoruiz/who-are-ya/issues"
@@ -15,6 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
+    "build": "echo 'Static build ready'",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

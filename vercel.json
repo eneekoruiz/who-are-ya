@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "buildCommand": "echo 'Static build ready'",
+  "outputDirectory": ".",
+  "ignoreCommand": "bash -c '[[ \"$VERCEL_GIT_COMMIT_REF\" =~ ^dependabot/ ]] && exit 0 || exit 1'"
+}
