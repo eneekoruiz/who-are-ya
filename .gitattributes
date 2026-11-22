@@ -1,0 +1,3 @@
+# Vendor compiled CSS bundle so GitHub classifies the project as JavaScript
+main.css linguist-vendored
+css/** linguist-vendored

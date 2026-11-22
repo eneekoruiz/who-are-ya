@@ -1,30 +1,34 @@
-# Who Are Ya? - Footballer Guessing Game
+# Who Are Ya? - Football Player Guessing Game
 
-A front-end football guessing game built with vanilla JavaScript and Tailwind CSS.
+Browser-based daily football player guessing game inspired by Wordle and Who Are You.
 
-## What it includes
+## Tech Stack
 
-- daily player selection based on the date
-- autocomplete search and team logo rendering
-- localStorage persistence for game progress
-- statistics tracking and result charts
-- responsive UI with custom animations
+- **Frontend:** Vanilla JavaScript (ES6+), HTML5, Tailwind CSS
+- **Persistence:** Web Storage API (LocalStorage)
+- **Data Source:** Static JSON dataset of top European leagues
 
-## Structure
+## Architecture & Key Decisions
 
-- `main.js` and `rows.js` handle the game loop and hint comparison
-- `loaders.js` fetches player data and daily solutions
-- `autocomplete.js` and `fragments.js` handle UI pieces
-- `js/scraping/` contains data-scraping exercises
+- **Deterministic Daily Solution:** Selects the daily target player using a deterministic date-based hashing function, ensuring all players get the same daily puzzle.
+- **Client-Side Hint Evaluation:** Compares user guesses against the target player across nationality, league, club, position, and age with visual color-coded feedback (match, partial/higher/lower, mismatch).
+- **Fuzzy Autocomplete Search:** Fast local search filtering player names, aliases, and clubs without remote API latency.
+- **Progress & Streak Persistence:** Tracks completed puzzles, guess history, and win streaks in LocalStorage.
 
-## Screenshots
+## Local Setup
 
-![Game screen](docs/images/home.png)
+### Prerequisites
 
-## Social preview
+- Any static HTTP server or modern web browser
 
-GitHub social preview asset: `docs/images/social-preview.png`
+### Running Locally
 
-## Links
+```bash
+git clone https://github.com/eneekoruiz/who-are-ya.git
+cd who-are-ya
 
-- DeepWiki: https://deepwiki.com/eneekoruiz/who-are-ya
+# Serve locally with any static server (e.g. npx serve or Python)
+npx serve .
+# or
+python -m http.server 8000
+```
