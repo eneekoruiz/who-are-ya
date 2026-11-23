@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://who-are-ya.vercel.app/sitemap.xml
